@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint';
-import Rule from '../rules/detect-buffer-noassert';
+import Rule from '../rules/detect-buffer-noassert.js';
 
 const tester = new RuleTester();
 
