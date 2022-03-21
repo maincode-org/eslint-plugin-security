@@ -1,14 +1,12 @@
-'use strict';
-
-const RuleTester = require('eslint').RuleTester;
+import Rule from '../rules/detect-possible-timing-attacks.js';
+import { RuleTester } from 'eslint';
 const tester = new RuleTester();
 
 const ruleName = 'detect-possible-timing-attacks';
-const Rule = require(`../rules/${ruleName}`);
 
 const valid = 'if (age === 5) {}';
 const invalidLeft = "if (password === 'mypass') {}";
-const invalidRigth = "if ('mypass' === password) {}";
+const invalidRight = "if ('mypass' === password) {}";
 
 // We only check with one string "password" and operator "==="
 // to KISS.
@@ -27,7 +25,7 @@ tester.run(`${ruleName} (right side)`, Rule, {
   valid: [{ code: valid }],
   invalid: [
     {
-      code: invalidRigth,
+      code: invalidRight,
       errors: [{ message: 'Potential timing attack, right side: true' }],
     },
   ],

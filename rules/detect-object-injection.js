@@ -7,9 +7,8 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
-var Sinks = [];
 function getSerialize(fn, decycle) {
-  var seen = [],
+  let seen = [],
     keys = [];
   decycle =
     decycle ||
@@ -17,7 +16,7 @@ function getSerialize(fn, decycle) {
       return '[Circular ' + getPath(value, seen, keys) + ']';
     };
   return function (key, value) {
-    var ret = value;
+    let ret = value;
     if (typeof value === 'object' && value) {
       if (seen.indexOf(value) !== -1) ret = decycle(key, value);
       else {
@@ -31,8 +30,8 @@ function getSerialize(fn, decycle) {
 }
 
 function getPath(value, seen, keys) {
-  var index = seen.indexOf(value);
-  var path = [keys[index]];
+  let index = seen.indexOf(value);
+  let path = [keys[index]];
   for (index--; index >= 0; index--) {
     if (seen[index][path[0]] === value) {
       value = seen[index];
@@ -47,20 +46,15 @@ function stringify(obj, fn, spaces, decycle) {
 }
 
 stringify.getSerialize = getSerialize;
-module.exports = function (context) {
-  'use strict';
 
-  var isChanged = false;
-
+export default function (context) {
   return {
     MemberExpression: function (node) {
       if (node.computed === true) {
-        var token = context.getTokens(node)[0];
         if (node.property.type === 'Identifier') {
           if (node.parent.type === 'VariableDeclarator') {
             context.report(node, 'Variable Assigned to Object Injection Sink');
           } else if (node.parent.type === 'CallExpression') {
-            //    console.log(node.parent)
             context.report(node, 'Function Call Object Injection Sink');
           } else {
             context.report(node, 'Generic Object Injection Sink');
@@ -69,4 +63,4 @@ module.exports = function (context) {
       }
     },
   };
-};
+}

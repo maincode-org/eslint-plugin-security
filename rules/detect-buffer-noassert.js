@@ -7,12 +7,12 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
-var names = [];
+// var names = [];
 
-module.exports = function (context) {
+export default function (context) {
   'use strict';
 
-  var read = [
+  let read = [
     'readUInt8',
     'readUInt16LE',
     'readUInt16BE',
@@ -29,7 +29,7 @@ module.exports = function (context) {
     'readDoubleBE',
   ];
 
-  var write = [
+  let write = [
     'writeUInt8',
     'writeUInt16LE',
     'writeUInt16BE',
@@ -48,7 +48,7 @@ module.exports = function (context) {
 
   return {
     MemberExpression: function (node) {
-      var index;
+      let index;
       if (read.indexOf(node.property.name) !== -1) {
         index = 1;
       } else if (write.indexOf(node.property.name) !== -1) {
@@ -62,7 +62,7 @@ module.exports = function (context) {
         node.parent.arguments[index] &&
         node.parent.arguments[index].value
       ) {
-        var token = context.getTokens(node)[0];
+        // var token = context.getTokens(node)[0];
         return context.report(
           node,
           'Found Buffer.' + node.property.name + ' with noAssert flag set true'
@@ -70,4 +70,4 @@ module.exports = function (context) {
       }
     },
   };
-};
+}

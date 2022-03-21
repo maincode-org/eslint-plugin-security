@@ -1,4 +1,4 @@
-var safe = require('safe-regex');
+import safe from 'safe-regex';
 /**
  * Check if the regex is evil or not using the safe-regex module
  * @author Adam Baldwin
@@ -8,12 +8,10 @@ var safe = require('safe-regex');
 // Rule Definition
 //------------------------------------------------------------------------------
 
-module.exports = function (context) {
-  'use strict';
-
+export default function (context) {
   return {
     Literal: function (node) {
-      var token = context.getTokens(node)[0],
+      let token = context.getTokens(node)[0],
         nodeType = token.type,
         nodeValue = token.value;
 
@@ -25,10 +23,10 @@ module.exports = function (context) {
     },
     NewExpression: function (node) {
       if (
-        node.callee.name == 'RegExp' &&
+        node.callee.name === 'RegExp' &&
         node.arguments &&
         node.arguments.length > 0 &&
-        node.arguments[0].type == 'Literal'
+        node.arguments[0].type === 'Literal'
       ) {
         if (!safe(node.arguments[0].value)) {
           context.report(node, 'Unsafe Regular Expression (new RegExp)');
@@ -36,4 +34,4 @@ module.exports = function (context) {
       }
     },
   };
-};
+}

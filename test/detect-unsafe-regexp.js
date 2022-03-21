@@ -1,10 +1,8 @@
-'use strict';
-
-const RuleTester = require('eslint').RuleTester;
+import Rule from '../rules/detect-unsafe-regex.js';
+import { RuleTester } from 'eslint';
 const tester = new RuleTester();
 
 const ruleName = 'detect-unsafe-regex';
-const Rule = require(`../rules/${ruleName}`);
 
 tester.run(ruleName, Rule, {
   valid: [{ code: '/^d+1337d+$/' }],

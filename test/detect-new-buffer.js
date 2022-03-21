@@ -1,12 +1,11 @@
-'use strict';
-
-const RuleTester = require('eslint').RuleTester;
+import Rule from '../rules/detect-new-buffer.js';
+import { RuleTester } from 'eslint';
 const tester = new RuleTester();
 
 const ruleName = 'detect-new-buffer';
 const invalid = 'var a = new Buffer(c)';
 
-tester.run(ruleName, require(`../rules/${ruleName}`), {
+tester.run(ruleName, Rule, {
   valid: [{ code: "var a = new Buffer('test')" }],
   invalid: [
     {

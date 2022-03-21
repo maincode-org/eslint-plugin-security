@@ -7,16 +7,14 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
-var names = [];
+let names = [];
 
-module.exports = function (context) {
-  'use strict';
-
+export default function (context) {
   return {
     CallExpression: function (node) {
-      var token = context.getTokens(node)[0];
+      //var token = context.getTokens(node)[0];
       if (node.callee.name === 'require') {
-        var args = node.arguments[0];
+        let args = node.arguments[0];
         if (args && args.type === 'Literal' && args.value === 'child_process') {
           if (node.parent.type === 'VariableDeclarator') {
             names.push(node.parent.id.name);
@@ -31,7 +29,7 @@ module.exports = function (context) {
       }
     },
     MemberExpression: function (node) {
-      var token = context.getTokens(node)[0];
+      // var token = context.getTokens(node)[0];
       if (
         node.property.name === 'exec' &&
         names.indexOf(node.object.name) > -1
@@ -49,4 +47,4 @@ module.exports = function (context) {
       }
     },
   };
-};
+}

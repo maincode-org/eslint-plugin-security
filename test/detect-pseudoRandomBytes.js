@@ -1,12 +1,11 @@
-'use strict';
-
-const RuleTester = require('eslint').RuleTester;
+import Rule from '../rules/detect-pseudoRandomBytes.js';
+import { RuleTester } from 'eslint';
 const tester = new RuleTester();
 
 const ruleName = 'detect-pseudoRandomBytes';
 const invalid = 'crypto.pseudoRandomBytes';
 
-tester.run(ruleName, require(`../rules/${ruleName}`), {
+tester.run(ruleName, Rule, {
   valid: [{ code: 'crypto.randomBytes' }],
   invalid: [
     {

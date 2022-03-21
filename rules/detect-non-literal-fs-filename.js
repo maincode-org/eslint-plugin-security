@@ -7,19 +7,25 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
-var names = [];
-var fsMetaData = require('./data/fsFunctionData.json');
-var funcNames = Object.keys(fsMetaData);
+import fs from 'fs';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-module.exports = function (context) {
-  'use strict';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
+let fsMetaData = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, './data/fsFunctionData.json'))
+);
+let funcNames = Object.keys(fsMetaData);
+
+export default function (context) {
   return {
     MemberExpression: function (node) {
-      var result = [];
+      let result = [];
       if (funcNames.indexOf(node.property.name) !== -1) {
-        var meta = fsMetaData[node.property.name];
-        var args = node.parent.arguments;
+        let meta = fsMetaData[node.property.name];
+        let args = node.parent.arguments;
         meta.forEach(function (i) {
           if (args && args.length > i) {
             if (args[i].type !== 'Literal') {
@@ -30,7 +36,6 @@ module.exports = function (context) {
       }
 
       if (result.length > 0) {
-        var token = context.getTokens(node)[0];
         return context.report(
           node,
           'Found fs.' +
@@ -43,9 +48,8 @@ module.exports = function (context) {
       /*
             if (node.parent && node.parent.arguments && node.parent.arguments[index].value) {
                 return context.report(node, 'found Buffer.' + node.property.name + ' with noAssert flag set true');
-
             }
-            */
+      */
     },
   };
-};
+}

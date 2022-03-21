@@ -7,9 +7,7 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
-module.exports = function (context) {
-  'use strict';
-
+export default function (context) {
   return {
     CallExpression: function (node) {
       if (node.callee.name === 'eval' && node.arguments[0].type !== 'Literal') {
@@ -20,4 +18,4 @@ module.exports = function (context) {
       }
     },
   };
-};
+}

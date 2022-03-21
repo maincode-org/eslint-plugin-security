@@ -7,18 +7,15 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
-module.exports = function (context) {
-  'use strict';
-
+export default function (context) {
   return {
     CallExpression: function (node) {
       if (node.callee.name === 'require') {
-        var args = node.arguments;
+        let args = node.arguments;
         if (args && args.length > 0 && args[0].type !== 'Literal') {
-          var token = context.getTokens(node)[0];
           return context.report(node, 'Found non-literal argument in require');
         }
       }
     },
   };
-};
+}

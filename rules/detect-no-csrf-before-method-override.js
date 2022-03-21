@@ -7,14 +7,13 @@
 // Rule Definition
 //------------------------------------------------------------------------------
 
-module.exports = function (context) {
-  'use strict';
-  var csrf = false;
+export default function (context) {
+  let csrf = false;
 
   return {
     CallExpression: function (node) {
-      var token = context.getTokens(node)[0],
-        nodeType = token.type,
+      let token = context.getTokens(node)[0],
+        // nodeType = token.type,
         nodeValue = token.value;
 
       if (nodeValue === 'express') {
@@ -35,4 +34,4 @@ module.exports = function (context) {
       }
     },
   };
-};
+}

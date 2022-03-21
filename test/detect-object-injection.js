@@ -1,11 +1,8 @@
-'use strict';
-
-const RuleTester = require('eslint').RuleTester;
+import Rule from '../rules/detect-object-injection.js';
+import { RuleTester } from 'eslint';
 const tester = new RuleTester();
 
 const ruleName = 'detect-object-injection';
-
-const Rule = require(`../rules/${ruleName}`);
 
 const valid = 'var a = {};';
 // const invalidVariable = "TODO";
